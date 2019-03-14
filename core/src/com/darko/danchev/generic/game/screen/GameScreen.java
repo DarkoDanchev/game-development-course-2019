@@ -19,12 +19,13 @@ public class GameScreen implements Screen {
     private SpriteBatch batch;
     private Sprite img;
     private Texture apple;
+    private TextureAtlas appleAtlas;
     private TextureRegion redApple;
     private TextureRegion greenApple;
     private TextureRegion blueApple;
-    private TextureAtlas appleAtlas;
     private BitmapFont font;
-    private  int score;
+    private int score;
+
 
     /*
         R: 0 - 1f
@@ -48,7 +49,6 @@ public class GameScreen implements Screen {
         this.img = new Sprite(imgTexture);
         this.img.setPosition(20,20);
         this.apple = new Texture("img/apple.png");
-
         this.appleAtlas = new TextureAtlas("apple/apple.atlas");
         this.redApple = appleAtlas.findRegion("red_apple");
         this.greenApple = appleAtlas.findRegion("green_apple");
@@ -69,8 +69,7 @@ public class GameScreen implements Screen {
         batch.draw(redApple,0,0,300,300);
         batch.draw(greenApple,0,300,300,300);
         batch.draw(blueApple,0,600,300,300);
-
-        font.draw(batch,"This is my first text with Bitmap Font: " + score,20,1000);
+        font.draw(batch,"This is my first Bitmap Font: " + score,20,1000);
         //texture1.draw
         //texture2.draw
         //texture3.draw
@@ -105,6 +104,5 @@ public class GameScreen implements Screen {
     public void dispose() {
         batch.dispose();
         appleAtlas.dispose();
-        font.dispose();
     }
 }
