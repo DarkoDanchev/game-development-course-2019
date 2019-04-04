@@ -104,6 +104,10 @@ public class GameScreen implements Screen {
         if(Gdx.input.justTouched()){
             score++;
         }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.N)){
+            genericGame.setScreen(new PhysicsGameScreen(genericGame));
+        }
     }
 
     private void moveCamera(){
