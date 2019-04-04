@@ -1,22 +1,31 @@
 package com.darko.danchev.generic.game.screen;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.darko.danchev.generic.game.GenericGame;
 
 public class GameScreen implements Screen {
 
     private GenericGame genericGame;
     private SpriteBatch batch;
+    private OrthographicCamera camera;
+    private Stage stage;
+    private Image image1;
+    private Image image2;
     private Sprite img;
     private Texture apple;
     private TextureAtlas appleAtlas;
@@ -45,6 +54,10 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         this.batch = new SpriteBatch();
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false,GenericGame.WIDTH,GenericGame.HEIGHT );
+        this.camera.position.set(camera.viewportWidth * 0.5f,camera.viewportHeight * 0.5f,0);
+        this.stage = new Stage(new StretchViewport(GenericGame.WIDTH,GenericGame.HEIGHT));
         Texture imgTexture = new Texture("img/badlogic.jpg");
         this.img = new Sprite(imgTexture);
         this.img.setPosition(20,20);
@@ -56,12 +69,23 @@ public class GameScreen implements Screen {
         this.font = new BitmapFont();
         this.font.getData().scale(1.4f);
         this.score = 0;
+
+        this.image1 = new Image(new Texture("apple/red_apple.jpg"));
+        this.image2 = new Image(new Texture("apple/blue_apple.jpg"));
+        this.image1.setPosition(GenericGame.WIDTH / 2, GenericGame.HEIGHT / 2);
+        this.image2.setPosition(GenericGame.WIDTH / 2,GenericGame.HEIGHT / 2 + image1.getWidth());
+        this.stage.addActor(image1);
+        this.stage.addActor(image2);
     }
 
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0/255f, 51/255f, 102/255f, 1); // 	0, 51, 102
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.setProjectionMatrix(camera.combined);
+        moveCamera();
+        camera.update();
+        stage.act();
         batch.begin();
         //batch.draw(img, 20, 20,200,200);
         //img.draw(batch);
@@ -75,8 +99,35 @@ public class GameScreen implements Screen {
         //texture3.draw
         batch.end();
 
+        stage.draw();
+
         if(Gdx.input.justTouched()){
             score++;
+        }
+    }
+
+    private void moveCamera(){
+        if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            camera.translate(new Vector2(-450*Gdx.graphics.getDeltaTime(),0));
+            if(!(image2.getX() + image2.getWidth() > stage.getCamera().viewportWidth)){
+                System.out.println("MOVING: " + stage.getCamera().viewportWidth);
+                stage.getCamera().translate(new Vector3(-450*Gdx.graphics.getDeltaTime(),0,0));
+            }
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            camera.translate(new Vector2(450*Gdx.graphics.getDeltaTime(),0));
+            stage.getCamera().translate(new Vector3(450*Gdx.graphics.getDeltaTime(),0,0));
+
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.W)){
+            camera.translate(new Vector2(0,450*Gdx.graphics.getDeltaTime()));
+            stage.getCamera().translate(new Vector3(0,450*Gdx.graphics.getDeltaTime(),0));
+
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            camera.translate(new Vector2(0,-450*Gdx.graphics.getDeltaTime()));
+            stage.getCamera().translate(new Vector3(0,-450*Gdx.graphics.getDeltaTime(),0));
+
         }
     }
 

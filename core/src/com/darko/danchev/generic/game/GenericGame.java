@@ -10,7 +10,11 @@ import com.darko.danchev.generic.game.screen.GameScreen;
 
 public class GenericGame extends Game {
 
-	
+	public static float WIDTH = 2520;
+	public static float HEIGHT = 4160;
+
+	public static float WORLD_HEIGHT = 20;
+
 	@Override
 	public void create () {
 		this.setScreen(new GameScreen(this));
