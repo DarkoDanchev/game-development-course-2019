@@ -38,13 +38,13 @@ public class Player extends Image {
         body = physicsWorld.createBody(bodyDef);
 
         PolygonShape bodyShape = new PolygonShape();
-        bodyShape.setAsBox(getWidth(),getHeight());
+        bodyShape.setAsBox(getWidth() / 2,getHeight() / 2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = bodyShape;
         fixtureDef.density = 0.5f;
         fixtureDef.friction = 0.5f;
-        fixtureDef.restitution = 0.0f;
+        fixtureDef.restitution = 0.5f;
 
         body.createFixture(fixtureDef);
 
@@ -53,18 +53,13 @@ public class Player extends Image {
 
     @Override
     public void act(float delta){
-        this.setPosition(body.getPosition().x + getWidth() / 2,body.getPosition().y + getHeight() / 2);
+        this.setPosition(body.getPosition().x - getWidth() / 2,body.getPosition().y - getHeight() / 2);
         this.setRotation(body.getAngle() * MathUtils.radiansToDegrees);
-        System.out.println(getY() + " " + GenericGame.WORLD_HEIGHT);
-
-        if(getY() > GenericGame.WORLD_HEIGHT){
-            setY(-getHeight());
-        }
     }
 
     public void jump(){
         body.setLinearVelocity(body.getLinearVelocity().x,0);
-        body.applyForceToCenter(0, 750f, true);
+        body.applyForceToCenter(0, 200f, true);
     }
 
 }
