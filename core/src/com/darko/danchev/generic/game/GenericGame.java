@@ -8,8 +8,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.darko.danchev.generic.game.assets.Assets;
 import com.darko.danchev.generic.game.screen.GameScreen;
+import com.darko.danchev.generic.game.screen.MenuScreen;
 
 public class GenericGame extends Game {
+
+	public enum GAME_STATE{
+		PLAYING,
+		MENU
+	}
 
 	public static float WIDTH = 2520; //pixels
 	public static float HEIGHT = 4160;
@@ -18,6 +24,8 @@ public class GenericGame extends Game {
 
 	public Assets assets;
 
+	public GAME_STATE gameState;
+
 	@Override
 	public void create () {
 		this.assets = new Assets();
@@ -25,7 +33,8 @@ public class GenericGame extends Game {
 		while (!this.assets.manager.update()){
 			System.out.println("Loading: " + this.assets.manager.getLoadedAssets());
 		}
-		this.setScreen(new GameScreen(this));
+		this.gameState = GAME_STATE.MENU;
+		this.setScreen(new MenuScreen(this));
 	}
 
 	@Override

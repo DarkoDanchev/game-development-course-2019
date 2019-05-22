@@ -24,7 +24,9 @@ public class GameScreen implements Screen {
 
     private GenericGame genericGame;
     private SpriteBatch batch;
+    private OrthographicCamera camera;
     private GameWorld gameWorld;
+    private Texture background;
 
     public GameScreen(GenericGame genericGame) {
         this.genericGame = genericGame;
@@ -33,14 +35,20 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         this.batch = new SpriteBatch();
+        this.camera = new OrthographicCamera();
+        this.camera.setToOrtho(false,GenericGame.WIDTH,GenericGame.HEIGHT);
         this.gameWorld = new GameWorld(this.genericGame);
+        this.background = genericGame.assets.manager.get(Assets.background, Texture.class);
     }
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(0/255f, 51/255f, 102/255f, 1); // 	0, 51, 102
+        Gdx.gl.glClearColor(55/255f, 51/255f, 102/255f, 1); // 	0, 51, 102
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(background,0,0);
+        batch.end();
         gameWorld.render();
         gameWorld.update();
     }

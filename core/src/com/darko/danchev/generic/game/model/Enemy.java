@@ -47,6 +47,7 @@ public class Enemy extends Image {
         fixtureDef.restitution = 0.5f;
 
         body.createFixture(fixtureDef);
+        body.setUserData(this);
 
         bodyShape.dispose();
     }
