@@ -1,14 +1,10 @@
 package com.darko.danchev.generic.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Preferences;
 import com.darko.danchev.generic.game.assets.Assets;
-import com.darko.danchev.generic.game.screen.GameScreen;
-import com.darko.danchev.generic.game.screen.MenuScreen;
+import com.darko.danchev.generic.game.screen.SplashScreen;
 
 public class GenericGame extends Game {
 
@@ -23,18 +19,21 @@ public class GenericGame extends Game {
 	public static float WORLD_HEIGHT = 20; // the unit is meters
 
 	public Assets assets;
-
 	public GAME_STATE gameState;
+	public int highscore;
+	private Preferences preferences;
 
 	@Override
 	public void create () {
 		this.assets = new Assets();
-		this.assets.load(); // ASYNC
-		while (!this.assets.manager.update()){
-			System.out.println("Loading: " + this.assets.manager.getLoadedAssets());
+		this.setScreen(new SplashScreen(this));
+		this.preferences = Gdx.app.getPreferences("highscorePreferences");
+		if(preferences.contains("highscore")) {
+			this.highscore = preferences.getInteger("highscore");
+		} else {
+			updateHighscore(0);
+			this.highscore = 0;
 		}
-		this.gameState = GAME_STATE.MENU;
-		this.setScreen(new MenuScreen(this));
 	}
 
 	@Override
@@ -46,5 +45,10 @@ public class GenericGame extends Game {
 	public void dispose () {
 		super.dispose();
 		this.assets.dispose();
+	}
+
+	public void updateHighscore(int newHighscore){
+		preferences.putInteger("highscore",newHighscore);
+		preferences.flush();
 	}
 }

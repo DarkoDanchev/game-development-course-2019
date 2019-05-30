@@ -9,8 +9,9 @@ public class Assets {
 
     public static String badlogic = "img/badlogic.jpg";
     public static String player = "player/player.png";
-    public static String enemy = "enemy/enemy.jpg";
+    public static String enemy = "enemy/enemy.png";
     public static String background = "ui/background.png";
+    public static String menu_background = "menu/menu_background.png";
 
     public Assets(){
         manager = new AssetManager();
@@ -21,6 +22,7 @@ public class Assets {
         manager.load(player, Texture.class);
         manager.load(enemy, Texture.class);
         manager.load(background, Texture.class);
+        manager.load(menu_background, Texture.class);
     }
 
     public void dispose(){

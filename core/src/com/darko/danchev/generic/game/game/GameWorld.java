@@ -28,6 +28,7 @@ public class GameWorld {
     private Stage stage;
     private List<EnemyWall> enemyWalls;
     private float worldWidth;
+    private int score;
 
     //private SpriteBatch batch;
     //private Box2DDebugRenderer debugRenderer;
@@ -45,6 +46,8 @@ public class GameWorld {
         this.stage.addActor(player);
 
         this.initWalls();
+
+        this.score = 0;
 
 
 
@@ -71,7 +74,12 @@ public class GameWorld {
             this.player.jump();
         }
         this.regenerateWall();
+        this.updateScore();
         if(genericGame.gameState == GenericGame.GAME_STATE.MENU){
+            if(genericGame.highscore < score){
+                genericGame.highscore = score;
+                genericGame.updateHighscore(score);
+            }
             genericGame.setScreen(new MenuScreen(genericGame));
         }
     }
@@ -94,5 +102,17 @@ public class GameWorld {
             EnemyWall enemyWall = new EnemyWall(genericGame,physicsWorld,stage,enemyWalls.get(enemyWalls.size() -1).getX() + 15);
             enemyWalls.add(enemyWall);
         }
+    }
+
+    private void updateScore()
+    {
+        if(player.getX() > enemyWalls.get(0).getX() && !enemyWalls.get(0).getScored()){
+            enemyWalls.get(0).score();
+            this.score++;
+        }
+    }
+
+    public int getScore(){
+        return this.score;
     }
 }

@@ -37,7 +37,7 @@ public class Player extends Image {
     private void repositionBody(float y){
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.position.set(body.getPosition().x + 0.25f,y);
+        bodyDef.position.set(body.getPosition().x,y);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
         physicsWorld.destroyBody(body);
