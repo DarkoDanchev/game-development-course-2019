@@ -16,6 +16,7 @@ public class EnemyWall {
     private World physicsWorld;
     private List<Enemy> enemyList;
     private float x;
+    private boolean scored;
     private Stage stage;
 
     public EnemyWall(GenericGame genericGame, World physicsWorld,Stage stage,float x){
@@ -23,6 +24,7 @@ public class EnemyWall {
         this.physicsWorld = physicsWorld;
         this.stage = stage;
         this.x = x;
+        this.scored = false;
         initWall();
     }
 
@@ -46,6 +48,18 @@ public class EnemyWall {
 
     public float getX(){
         return x;
+    }
+
+    public float getWidth() {
+        return enemyList.get(0).getWidth();
+    }
+
+    public boolean getScored(){
+        return scored;
+    }
+
+    public void score(){
+        scored = true;
     }
 
 }

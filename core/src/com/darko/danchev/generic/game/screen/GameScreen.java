@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -27,6 +28,7 @@ public class GameScreen implements Screen {
     private OrthographicCamera camera;
     private GameWorld gameWorld;
     private Texture background;
+    private BitmapFont font;
 
     public GameScreen(GenericGame genericGame) {
         this.genericGame = genericGame;
@@ -39,6 +41,9 @@ public class GameScreen implements Screen {
         this.camera.setToOrtho(false,GenericGame.WIDTH,GenericGame.HEIGHT);
         this.gameWorld = new GameWorld(this.genericGame);
         this.background = genericGame.assets.manager.get(Assets.background, Texture.class);
+        this.font = new BitmapFont();
+
+        this.font.getData().scale(8);
     }
 
     @Override
@@ -50,7 +55,21 @@ public class GameScreen implements Screen {
         batch.draw(background,0,0);
         batch.end();
         gameWorld.render();
+        batch.begin();
+        drawScore(gameWorld.getScore(),batch);
+        batch.end();
+
         gameWorld.update();
+        camera.update();
+    }
+
+    private void drawScore(int score,SpriteBatch batch){
+
+        GlyphLayout glyphLayout = new GlyphLayout();
+        String item = "Score: " + score;
+        glyphLayout.setText(font,item);
+        float w = glyphLayout.width;
+        font.draw(batch, glyphLayout, camera.position.x - w/2, GenericGame.HEIGHT - 50);
     }
 
     @Override
